@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecosistema Digital B2B — Distribuidora Austral SpA</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue:        #1E3A8A;
+  --blue-h:      #1E40AF;
+  --blue-mid:    #2563EB;
+  --blue-light:  #DBEAFE;
+  --green:       #10B981;
+  --green-h:     #059669;
+  --green-light: #D1FAE5;
+  --red:         #EF4444;
+  --red-light:   #FEE2E2;
+  --amber:       #F59E0B;
+  --amber-light: #FEF3C7;
+  --bg:          #F3F4F6;
+  --card:        #FFFFFF;
+  --text:        #111827;
+  --muted:       #6B7280;
+  --border:      #E5E7EB;
+  --sidebar-w:   260px;
+  --r:           12px;
+  --sh:          0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
+}
+
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); display:flex; min-height:100vh; overflow-x:hidden; }
+
+/* ─ SIDEBAR ─ */
+#sidebar {
+  width:var(--sidebar-w); min-height:100vh; background:var(--blue);
+  position:fixed; top:0; left:0; z-index:200; display:flex; flex-direction:column;
+}
+.sb-brand { padding:24px 20px 18px; border-bottom:1px solid rgba(255,255,255,.1); }
+.sb-brand h2 { color:#fff; font-size:14px; font-weight:700; line-height:1.4; }
+.sb-brand p  { color:rgba(255,255,255,.5); font-size:11px; margin-top:3px; text-transform:uppercase; letter-spacing:.07em; }
+.sb-live { display:inline-flex; align-items:center; gap:5px; background:rgba(16,185,129,.2); color:#6EE7B7; font-size:10px; font-weight:700; padding:3px 9px; border-radius:20px; margin-top:8px; letter-spacing:.05em; text-transform:uppercase; }
+.sb-live::before { content:''; width:6px; height:6px; border-radius:50%; background:#10B981; display:block; animation:blink 1.4s infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+nav { flex:1; padding:14px 10px; overflow-y:auto; }
+.nav-label { font-size:10px; font-weight:600; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.1em; padding:10px 10px 4px; }
+.nav-item {
+  display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px;
+  color:rgba(255,255,255,.7); font-size:13px; font-weight:500; cursor:pointer;
+  transition:background .15s, color .15s; margin-bottom:2px; user-select:none;
+}
+.nav-item:hover { background:rgba(255,255,255,.09); color:#fff; }
+.nav-item.active { background:rgba(255,255,255,.16); color:#fff; font-weight:600; }
+.nav-item .ni-icon { width:17px; height:17px; flex-shrink:0; }
+.sb-footer { padding:14px 20px; border-top:1px solid rgba(255,255,255,.1); }
+.sb-footer p { color:rgba(255,255,255,.35); font-size:10px; line-height:1.6; }
+
+/* ─ MAIN ─ */
+#main { margin-left:var(--sidebar-w); flex:1; display:flex; flex-direction:column; }
+.topbar {
+  background:var(--card); border-bottom:1px solid var(--border);
+  padding:13px 26px; display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+}
+.tb-left h1 { font-size:17px; font-weight:700; }
+.tb-left p  { font-size:11px; color:var(--muted); margin-top:2px; }
+.tb-right   { display:flex; align-items:center; gap:10px; }
+.tb-chip { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:20px; }
+.chip-blue  { background:var(--blue-light); color:var(--blue); }
+.chip-green { background:var(--green-light); color:#065F46; }
+
+/* ─ PAGES ─ */
+.page { display:none; padding:24px 26px; animation:fadeIn .18s ease; }
+.page.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(5px);} to{opacity:1;transform:translateY(0);} }
+
+/* ─ LAYOUT HELPERS ─ */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.mb12 { margin-bottom:12px; } .mb16 { margin-bottom:16px; } .mb20 { margin-bottom:20px; } .mb24 { margin-bottom:24px; }
+.row { display:flex; align-items:center; gap:10px; }
+.flex1 { flex:1; }
+
+/* ─ CARDS ─ */
+.card { background:var(--card); border-radius:var(--r); box-shadow:var(--sh); padding:18px; }
+.sec-title { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px; }
+
+/* ─ STAT CARD ─ */
+.stat-val { font-size:26px; font-weight:800; color:var(--blue); line-height:1; margin-bottom:2px; }
+.stat-lbl { font-size:12px; color:var(--muted); }
+.stat-delta { font-size:11px; font-weight:600; color:var(--green); margin-top:5px; }
+.stat-delta.neg { color:var(--red); }
+
+/* ─ BADGES ─ */
+.bdg { display:inline-flex; align-items:center; font-size:11px; font-weight:600; padding:3px 9px; border-radius:20px; white-space:nowrap; }
+.bdg-green  { background:var(--green-light); color:#065F46; }
+.bdg-red    { background:var(--red-light);   color:#991B1B; }
+.bdg-amber  { background:var(--amber-light); color:#92400E; }
+.bdg-blue   { background:var(--blue-light);  color:var(--blue); }
+.bdg-dark   { background:var(--blue);        color:#fff; }
+
+/* ─ BUTTONS ─ */
+.btn { display:inline-flex; align-items:center; gap:6px; padding:9px 18px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:none; transition:background .15s, transform .1s; font-family:inherit; }
+.btn:hover { filter:brightness(1.08); transform:translateY(-1px); }
+.btn:active { transform:translateY(0); }
+.btn-blue   { background:var(--blue);  color:#fff; }
+.btn-blue:hover { background:var(--blue-h); }
+.btn-green  { background:var(--green); color:#fff; }
+.btn-green:hover { background:var(--green-h); }
+.btn-red    { background:var(--red);   color:#fff; }
+.btn-outline { background:transparent; color:var(--blue); border:1.5px solid var(--blue); }
+.btn-sm     { padding:6px 13px; font-size:12px; border-radius:7px; }
+.btn-xs     { padding:4px 10px; font-size:11px; border-radius:6px; }
+.btn-full   { width:100%; justify-content:center; }
+
+/* ─ TABLE ─ */
+.tbl-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+thead th { font-weight:600; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.06em; border-bottom:1.5px solid var(--border); padding:8px 12px; text-align:left; white-space:nowrap; }
+tbody td { padding:11px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+tbody tr:last-child td { border-bottom:none; }
+tbody tr:hover { background:#FAFAFA; }
+
+/* ─ PROGRESS ─ */
+.prog-wrap { background:var(--bg); border-radius:20px; height:7px; overflow:hidden; }
+.prog-bar  { height:100%; border-radius:20px; transition:width .5s ease; }
+.pb-blue   { background:var(--blue); }
+.pb-green  { background:var(--green); }
+.pb-amber  { background:var(--amber); }
+.pb-red    { background:var(--red); }
+
+/* ─ FORM INPUTS ─ */
+.inp, select.inp {
+  padding:9px 12px; border:1.5px solid var(--border); border-radius:8px;
+  font-size:13px; font-family:inherit; outline:none; background:#fff; color:var(--text);
+  transition:border-color .15s; width:100%;
+}
+.inp:focus, select.inp:focus { border-color:var(--blue-mid); }
+
+/* ─ MODULE 1 — PORTAL ─ */
+.reorder-bar {
+  background:linear-gradient(135deg,var(--blue) 0%,#1D4ED8 100%);
+  border-radius:var(--r); padding:15px 20px; display:flex; align-items:center;
+  justify-content:space-between; margin-bottom:20px;
+}
+.reorder-bar p { color:rgba(255,255,255,.85); font-size:13px; }
+.reorder-bar strong { color:#fff; }
+
+.prod-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
+.prod-card { background:var(--card); border-radius:var(--r); box-shadow:var(--sh); overflow:hidden; display:flex; flex-direction:column; }
+.prod-img  { background:var(--blue-light); height:100px; display:flex; align-items:center; justify-content:center; font-size:44px; }
+.prod-body { padding:14px; flex:1; display:flex; flex-direction:column; gap:6px; }
+.prod-name { font-size:14px; font-weight:700; line-height:1.3; }
+.prod-price { font-size:17px; font-weight:800; color:var(--blue); }
+.prod-price span { font-size:11px; font-weight:500; color:var(--muted); }
+.stk-row   { display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--muted); margin-top:2px; }
+
+.checkout-bar {
+  background:var(--card); border-radius:var(--r); box-shadow:var(--sh); padding:18px;
+  display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap;
+}
+.checkout-bar label { font-size:12px; font-weight:600; color:var(--muted); display:block; margin-bottom:4px; }
+
+/* ─ CART ─ */
+.cart-panel {
+  position:fixed; top:0; right:-390px; width:375px; height:100vh;
+  background:var(--card); box-shadow:-6px 0 28px rgba(0,0,0,.13);
+  z-index:500; transition:right .3s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column;
+}
+.cart-panel.open { right:0; }
+.cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,.28); z-index:499; display:none; backdrop-filter:blur(1px); }
+.cart-overlay.on { display:block; }
+.cart-head { padding:18px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.cart-head h3 { font-size:15px; font-weight:700; }
+.cart-x { background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted); line-height:1; }
+.cart-body { flex:1; overflow-y:auto; padding:14px; }
+.cart-empty { text-align:center; padding:40px 16px; color:var(--muted); }
+.cart-empty span { font-size:36px; display:block; margin-bottom:8px; }
+.ci { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
+.ci-icon { font-size:22px; width:34px; text-align:center; flex-shrink:0; }
+.ci-info { flex:1; }
+.ci-info p { font-size:13px; font-weight:600; }
+.ci-info span { font-size:11px; color:var(--muted); }
+.ci-price { font-size:14px; font-weight:700; color:var(--blue); }
+.ci-rm { background:none; border:none; color:var(--red); cursor:pointer; font-size:15px; padding:2px; }
+.cart-foot { padding:14px 20px; border-top:1px solid var(--border); }
+.cart-total-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.cart-total-row span { font-size:13px; color:var(--muted); }
+.cart-total-row .amt { font-size:22px; font-weight:800; color:var(--blue); }
+.cart-tax { font-size:11px; color:var(--muted); margin-bottom:12px; }
+.cart-fab {
+  position:fixed; bottom:26px; right:26px; z-index:300;
+  background:var(--blue); color:#fff; border:none; border-radius:50%;
+  width:54px; height:54px; font-size:20px; cursor:pointer;
+  box-shadow:0 4px 18px rgba(30,58,138,.45); display:flex; align-items:center; justify-content:center;
+  transition:transform .15s;
+}
+.cart-fab:hover { transform:scale(1.07); }
+.fab-badge {
+  position:absolute; top:-4px; right:-4px; background:var(--green); color:#fff;
+  font-size:10px; font-weight:700; border-radius:50%; width:20px; height:20px;
+  display:flex; align-items:center; justify-content:center; pointer-events:none;
+}
+
+/* ─ MODULE 2 ─ */
+.pipeline-wrap { display:flex; gap:12px; }
+.pipe-col { flex:1; background:var(--bg); border-radius:10px; padding:12px; }
+.pipe-col h4 { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:10px; }
+.pipe-card { background:var(--card); border-radius:8px; padding:11px 13px; margin-bottom:8px; box-shadow:0 1px 3px rgba(0,0,0,.06); border-left:3px solid transparent; transition:border-color .3s; }
+.pipe-card.approved { border-color:var(--green); }
+.pipe-card.transit  { border-color:var(--amber); }
+.pipe-card.fulfilled{ border-color:var(--blue); }
+.pipe-card p { font-size:13px; font-weight:600; margin-bottom:2px; }
+.pipe-card .pipe-meta { font-size:11px; color:var(--muted); }
+
+.inc-form { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+
+/* ─ MODULE 3 ─ */
+.route-map { background:linear-gradient(140deg,#EFF6FF 0%,#ECFDF5 100%); border-radius:var(--r); border:1.5px solid var(--border); overflow:hidden; }
+.tele-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.tele-card { background:var(--card); border-radius:10px; padding:15px; border:1.5px solid var(--border); transition:border-color .3s, background .3s; }
+.tele-card.crit { border-color:var(--red); background:var(--red-light); animation:flash .9s infinite; }
+@keyframes flash { 0%,100%{opacity:1;} 50%{opacity:.65;} }
+.tele-temp { font-size:24px; font-weight:800; }
+.tele-ok  { color:var(--green); }
+.tele-bad { color:var(--red); }
+.tele-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+.tele-status { font-size:11px; font-weight:600; margin-top:6px; }
+
+/* ─ MODULE 4 ─ */
+.kri-strip { border-top:3px solid var(--blue); }
+.kpi-strip { border-top:3px solid var(--green); }
+.met-row   { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.met-lbl   { flex:1; font-size:13px; }
+.met-val   { font-size:14px; font-weight:800; min-width:65px; text-align:right; }
+.mv-ok     { color:var(--green); }
+.mv-warn   { color:var(--amber); }
+.mv-bad    { color:var(--red); }
+.hoshin-strip {
+  background:linear-gradient(135deg,var(--blue),#1D4ED8); border-radius:var(--r);
+  display:flex; flex-wrap:wrap; overflow:hidden; margin-bottom:16px;
+}
+.hoshin-cell { flex:1; min-width:170px; padding:14px 18px; border-right:1px solid rgba(255,255,255,.15); }
+.hoshin-cell:last-child { border-right:none; }
+.hoshin-cell .hc-lbl { font-size:10px; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px; }
+.hoshin-cell .hc-val { font-size:13px; color:#fff; font-weight:600; line-height:1.4; }
+.hoshin-arrow { font-size:20px; color:rgba(255,255,255,.4); display:flex; align-items:center; padding:0 4px; }
+
+.a3-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.a3-cell { background:var(--card); border-radius:10px; padding:15px; border:1.5px solid var(--border); }
+.a3-cell h4 { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--blue); margin-bottom:8px; }
+.a3-cell p  { font-size:13px; line-height:1.7; }
+
+/* ─ GLOBAL TOAST ─ */
+.toast {
+  position:fixed; top:18px; left:50%; transform:translateX(-50%);
+  background:var(--text); color:#fff; padding:12px 22px; border-radius:10px;
+  font-size:13px; font-weight:600; z-index:9999; box-shadow:0 6px 28px rgba(0,0,0,.22);
+  opacity:0; transition:opacity .28s; pointer-events:none; white-space:nowrap;
+}
+.toast.ok   { background:var(--green); }
+.toast.warn { background:var(--amber); color:var(--text); }
+.toast.err  { background:var(--red); }
+.toast.show { opacity:1; }
+
+/* ─ SUCCESS OVERLAY ─ */
+.success-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9000;
+  display:none; align-items:center; justify-content:center; backdrop-filter:blur(3px);
+}
+.success-overlay.on { display:flex; }
+.so-box { background:#fff; border-radius:16px; padding:40px 36px; text-align:center; max-width:420px; animation:popIn .3s cubic-bezier(.34,1.56,.64,1); }
+@keyframes popIn { from{transform:scale(.8);opacity:0;} to{transform:scale(1);opacity:1;} }
+.so-icon { font-size:56px; margin-bottom:12px; }
+.so-box h2 { font-size:20px; font-weight:700; margin-bottom:6px; color:var(--blue); }
+.so-box p  { font-size:13px; color:var(--muted); line-height:1.6; }
+.so-divider { border:none; border-top:1px solid var(--border); margin:16px 0; }
+.so-detail { background:var(--bg); border-radius:8px; padding:12px 16px; text-align:left; font-size:12px; line-height:1.8; color:var(--text); }
+.so-detail strong { color:var(--blue); }
+
+hr.div { border:none; border-top:1px solid var(--border); margin:16px 0; }
+
+/* ─ SCROLLBAR ─ */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:20px; }
+</style>
+</head>
+<body>
+
+<!-- GLOBAL TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="so">
+  <div class="so-box">
+    <div class="so-icon">✅</div>
+    <h2>Pedido Digital Enviado</h2>
+    <p>El pedido ha sido registrado en el sistema y notificado al equipo de despacho. Tiempo estimado de confirmación: <strong>menos de 5 minutos</strong>.</p>
+    <hr class="so-divider">
+    <div class="so-detail" id="so-detail"></div>
+    <button class="btn btn-blue" style="margin-top:18px;width:100%;justify-content:center;" onclick="closeSO()">Cerrar &amp; Ver Módulo Admin</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sb-brand">
+    <h2>Distribuidora Austral SpA</h2>
+    <p>Cadena de Frío · Logística B2B</p>
+    <span class="sb-live">Sistema en línea</span>
+  </div>
+  <nav>
+    <div class="nav-label">Módulos</div>
+    <div class="nav-item active" data-page="portal" onclick="go('portal')">
+      <svg class="ni-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Portal Cliente B2B
+    </div>
+    <div class="nav-item" data-page="admin" onclick="go('admin')">
+      <svg class="ni-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Hub Admin &amp; CRM
+      <span class="bdg bdg-red" id="nb-admin" style="margin-left:auto;font-size:10px;display:none;"></span>
+    </div>
+    <div class="nav-item" data-page="eco" onclick="go('eco')">
+      <svg class="ni-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Eco-Logística &amp; Frío
+    </div>
+    <div class="nav-item" data-page="exec" onclick="go('exec')">
+      <svg class="ni-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Dashboard Ejecutivo
+    </div>
+  </nav>
+  <div class="sb-footer">
+    <p>Prototipo Alta Fidelidad<br>Consultoría Estratégica Integral<br>IPSS · MD100TMDI · 2025</p>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-left">
+      <h1 id="tb-title">Portal Cliente B2B</h1>
+      <p id="tb-sub">Vista: Chef / Encargado de Compras · Turno nocturno</p>
+    </div>
+    <div class="tb-right">
+      <span class="tb-chip chip-green">🌡 Cadena de frío activa</span>
+      <span class="tb-chip chip-blue">♻ Eco-Logística ON</span>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 1: PORTAL ═══ -->
+  <div class="page active" id="page-portal">
+
+    <!-- Reorder bar -->
+    <div class="reorder-bar">
+      <div>
+        <p><strong>🔁 Re-Orden con 1 Click</strong> — Último pedido registrado: 10 Jun 2025</p>
+        <p style="font-size:12px;margin-top:2px;color:rgba(255,255,255,.75);">Lomo Liso ×2 · Salmón ×1 · Berries ×2 · Cheddar ×1 — Total ref.: <strong>$525.000</strong></p>
+      </div>
+      <button class="btn" style="background:#fff;color:var(--blue);" onclick="reorderAll()">↩ Repetir Pedido</button>
+    </div>
+
+    <!-- Product grid -->
+    <p class="sec-title">Catálogo — Productos Congelados &amp; Refrigerados</p>
+    <div class="prod-grid" id="prod-grid"></div>
+
+    <!-- Checkout bar -->
+    <div class="checkout-bar">
+      <div style="flex:1;min-width:200px;">
+        <label for="client-sel">Cuenta de cliente que realiza el pedido</label>
+        <select class="inp" id="client-sel">
+          <option value="">— Seleccionar cliente —</option>
+          <option value="0">Restaurante El Gaucho Santiago</option>
+          <option value="1">Cafetería Valparaíso Centro</option>
+          <option value="2">Casino Central SpA</option>
+          <option value="3">Minimarket El Progreso</option>
+          <option value="4">Hotel Del Mar Viña</option>
+          <option value="5">Cadena Sushi Pro</option>
+        </select>
+      </div>
+      <button class="btn btn-blue" style="height:42px;" onclick="toggleCart()">
+        🛒 Ver Carrito <span id="fab-count-main" style="background:var(--green);color:#fff;border-radius:20px;padding:1px 7px;font-size:11px;margin-left:4px;">0</span>
+      </button>
+      <button class="btn btn-green" style="height:42px;" onclick="submitOrder()">✅ Enviar Pedido Digital</button>
+    </div>
+
+    <!-- FAB -->
+    <button class="cart-fab" id="cart-fab" onclick="toggleCart()">
+      🛒<span class="fab-badge" id="fab-badge">0</span>
+    </button>
+
+  </div>
+
+  <!-- ═══ PAGE 2: ADMIN ═══ -->
+  <div class="page" id="page-admin">
+
+    <!-- Stats -->
+    <div class="g4 mb20">
+      <div class="card">
+        <div class="stat-val" id="s-clients">6</div>
+        <div class="stat-lbl">Clientes B2B activos</div>
+        <div class="stat-delta" id="s-clients-d">Cartera estable</div>
+      </div>
+      <div class="card">
+        <div class="stat-val" id="s-orders">8</div>
+        <div class="stat-lbl">Pedidos digitales</div>
+        <div class="stat-delta" id="s-orders-d">▲ +3 hoy</div>
+      </div>
+      <div class="card">
+        <div class="stat-val" id="s-inc">2</div>
+        <div class="stat-lbl">Incidentes abiertos</div>
+        <div class="stat-delta neg" id="s-inc-d">▼ Requiere gestión</div>
+      </div>
+      <div class="card">
+        <div class="stat-val" id="s-rev">$1.2M</div>
+        <div class="stat-lbl">Revenue mes digital</div>
+        <div class="stat-delta" id="s-rev-d">▲ Meta: $2M</div>
+      </div>
+    </div>
+
+    <div class="g2 mb16">
+      <!-- CRM Table -->
+      <div class="card">
+        <p class="sec-title">CRM — Clientes Estratégicos</p>
+        <div class="tbl-wrap">
+          <table id="crm-table">
+            <thead><tr><th>Empresa</th><th>Segmento</th><th>Estado</th><th>Último Pedido (Valor)</th></tr></thead>
+            <tbody id="crm-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Incidents -->
+      <div class="card">
+        <p class="sec-title">Rastreador de Incidentes Post-Venta</p>
+        <div class="inc-form">
+          <input type="text" class="inp" id="inc-inp" placeholder="Descripción del incidente..." style="flex:1;min-width:160px;">
+          <select class="inp" id="inc-type" style="width:150px;">
+            <option>Quiebre de frío</option>
+            <option>Retraso entrega</option>
+            <option>Producto dañado</option>
+            <option>Error de pedido</option>
+          </select>
+          <button class="btn btn-red btn-sm" onclick="addIncident()">+ Registrar</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Tipo</th><th>Descripción</th><th>Estado</th></tr></thead>
+            <tbody id="inc-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="card">
+      <p class="sec-title">Pipeline de Fulfillment — Pedidos Activos</p>
+      <div class="pipeline-wrap">
+        <div class="pipe-col">
+          <h4 style="color:#065F46;">✅ Aprobado (Digital)</h4>
+          <div id="pipe-approved"></div>
+        </div>
+        <div class="pipe-col">
+          <h4 style="color:#92400E;">🚛 En Tránsito</h4>
+          <div id="pipe-transit"></div>
+        </div>
+        <div class="pipe-col">
+          <h4 style="color:var(--blue);">📦 Entregado</h4>
+          <div id="pipe-fulfilled"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 3: ECO ═══ -->
+  <div class="page" id="page-eco">
+
+    <div class="g2 mb16">
+      <!-- Map -->
+      <div class="card">
+        <p class="sec-title">Optimización de Rutas — Santiago &amp; Valparaíso</p>
+        <div class="route-map">
+          <svg viewBox="0 0 520 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+            <rect width="520" height="240" fill="#F0F9FF"/>
+            <path d="M70 190 Q190 120 340 85 Q420 72 470 60" stroke="#CBD5E1" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M70 190 Q160 148 255 115 Q320 95 385 78" stroke="#1E3A8A" stroke-width="3" fill="none" stroke-dasharray="7,4"/>
+            <path d="M255 115 Q270 162 305 192" stroke="#10B981" stroke-width="3" fill="none" stroke-dasharray="7,4"/>
+            <circle cx="70"  cy="190" r="11" fill="#1E3A8A"/>
+            <text x="70"  y="210" text-anchor="middle" font-size="10" font-weight="700" fill="#1E3A8A">BODEGA</text>
+            <circle cx="255" cy="115" r="8"  fill="#2563EB"/>
+            <text x="255" y="105" text-anchor="middle" font-size="9" fill="#1E3A8A">Stgo. Centro</text>
+            <circle cx="385" cy="78"  r="8"  fill="#2563EB"/>
+            <text x="385" y="68"  text-anchor="middle" font-size="9" fill="#1E3A8A">Valparaíso</text>
+            <circle cx="305" cy="192" r="8"  fill="#10B981"/>
+            <text x="305" y="207" text-anchor="middle" font-size="9" fill="#065F46">Maipú Hub</text>
+            <circle cx="155" cy="155" r="6"  fill="#F59E0B"/>
+            <text x="155" y="145" text-anchor="middle" font-size="9" fill="#92400E">Pdte. Errázuriz</text>
+            <text x="205" y="128" font-size="17">🚛</text>
+            <text x="330" y="90"  font-size="14">🚚</text>
+            <line x1="20" y1="228" x2="55" y2="228" stroke="#1E3A8A" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="60" y="232" font-size="9" fill="#1E3A8A">Ruta optimizada</text>
+            <line x1="155" y1="228" x2="190" y2="228" stroke="#10B981" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="195" y="232" font-size="9" fill="#065F46">Retorno circular</text>
+          </svg>
+        </div>
+      </div>
+      <!-- Sustainability -->
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card" style="border-left:4px solid var(--green);">
+          <p class="sec-title">CO₂ Mitigado — Routing Algorítmico</p>
+          <div class="stat-val" style="color:var(--green);" id="co2-val">2.4 ton</div>
+          <div class="stat-lbl">CO₂ evitado vs. rutas manuales (mes actual)</div>
+          <div class="stat-delta" id="co2-d">▲ +18% eficiencia vs. mes anterior</div>
+          <hr class="div">
+          <div>
+            <div class="stk-row" style="margin-bottom:4px;"><span>Km reducidos</span><span>73%</span></div>
+            <div class="prog-wrap mb12"><div class="prog-bar pb-green" style="width:73%"></div></div>
+            <div class="stk-row" style="margin-bottom:4px;"><span>Eficiencia combustible</span><span>61%</span></div>
+            <div class="prog-wrap"><div class="prog-bar pb-green" style="width:61%"></div></div>
+          </div>
+        </div>
+        <div class="card" style="border-left:4px solid var(--blue);">
+          <p class="sec-title">♻ Auditoría Logística Inversa — Cajas Térmicas</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Cliente</th><th>Prestadas</th><th>Retornadas</th><th>Tasa</th></tr></thead>
+              <tbody>
+                <tr><td>El Gaucho</td><td>12</td><td>11</td><td><span class="bdg bdg-green">92%</span></td></tr>
+                <tr><td>Casino Central</td><td>24</td><td>23</td><td><span class="bdg bdg-green">96%</span></td></tr>
+                <tr><td>Sushi Pro</td><td>8</td><td>6</td><td><span class="bdg bdg-amber">75%</span></td></tr>
+                <tr><td>Minimarket Prog.</td><td>6</td><td>6</td><td><span class="bdg bdg-green">100%</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Telemetry -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+        <p class="sec-title" style="margin:0;">🌡 Telemetría IoT — Sensores de Temperatura en Flota (Tiempo Real)</p>
+        <button class="btn btn-red btn-sm" id="spike-btn" onclick="simulateSpike()">⚡ Simulate Server Failure &amp; Cold Chain Drop</button>
+      </div>
+      <div class="tele-grid" id="tele-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PAGE 4: EXEC ═══ -->
+  <div class="page" id="page-exec">
+
+    <!-- Hoshin strip -->
+    <div class="hoshin-strip mb16">
+      <div class="hoshin-cell"><div class="hc-lbl">Visión 2028</div><div class="hc-val">Líder B2B cadena de frío digital RM + V Región</div></div>
+      <div class="hoshin-arrow">→</div>
+      <div class="hoshin-cell"><div class="hc-lbl">Obj. Largo Plazo</div><div class="hc-val">↑40% ingresos digitales · ↓30% costos logísticos</div></div>
+      <div class="hoshin-arrow">→</div>
+      <div class="hoshin-cell"><div class="hc-lbl">Obj. Anual SMART</div><div class="hc-val">80% pedidos via plataforma al 31 Dic 2025</div></div>
+      <div class="hoshin-arrow">→</div>
+      <div class="hoshin-cell"><div class="hc-lbl">Responsable</div><div class="hc-val">Gerencia Comercial + TI · Revisión mensual</div></div>
+    </div>
+
+    <div class="g2 mb16">
+      <!-- KRIs -->
+      <div class="card kri-strip">
+        <p class="sec-title" style="color:var(--blue);">📊 KRIs — Indicadores de Resultado Clave (Parmenter)</p>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:14px;">Resultados rezagados macro · Perspectiva estratégica</p>
+        <div class="met-row">
+          <span class="met-lbl">Crecimiento Rentabilidad Canal B2B (%)</span>
+          <span class="met-val mv-ok">+12.4%</span>
+        </div>
+        <div class="prog-wrap mb16"><div class="prog-bar pb-blue" style="width:62%"></div></div>
+        <div class="met-row">
+          <span class="met-lbl">Score Retención Clientes Históricos</span>
+          <span class="met-val mv-ok">88%</span>
+        </div>
+        <div class="prog-wrap mb16"><div class="prog-bar pb-blue" style="width:88%"></div></div>
+        <div class="met-row">
+          <span class="met-lbl">Net Promoter Score (NPS) B2B</span>
+          <span class="met-val mv-ok">+47</span>
+        </div>
+        <div class="prog-wrap"><div class="prog-bar pb-blue" style="width:70%"></div></div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="card kpi-strip">
+        <p class="sec-title" style="color:var(--green);">⚙ KPIs — Indicadores Clave de Desempeño (Parmenter)</p>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:14px;">Indicadores adelantados operacionales · Revisión diaria</p>
+        <div class="met-row">
+          <span class="met-lbl flex1">Tiempo Promedio Carga de Flota (min)</span>
+          <span class="met-val mv-warn">28 min</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Meta: ≤ 22 min</div>
+        <div class="prog-wrap mb16"><div class="prog-bar pb-amber" style="width:55%"></div></div>
+        <div class="met-row">
+          <span class="met-lbl flex1">Tasa Error Pedidos Digitales (%)</span>
+          <span class="met-val mv-ok">1.8%</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Meta: ≤ 2.0%</div>
+        <div class="prog-wrap mb16"><div class="prog-bar pb-green" style="width:82%"></div></div>
+        <div class="met-row">
+          <span class="met-lbl flex1">Cumplimiento Ruta Cold-Chain Flota (%)</span>
+          <span class="met-val mv-ok">96.3%</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Meta: ≥ 95%</div>
+        <div class="prog-wrap"><div class="prog-bar pb-green" style="width:96%"></div></div>
+      </div>
+    </div>
+
+    <!-- A3 -->
+    <div class="card mb16">
+      <p class="sec-title">📋 Informe A3 — Eliminación de Quiebres de Stock (PDCA)</p>
+      <div class="a3-grid">
+        <div class="a3-cell">
+          <h4>🔍 Definición del Problema</h4>
+          <p>Distribuidora Austral pierde un 18% de pedidos potenciales por quiebres de stock no detectados, generados por gestión manual vía WhatsApp y Excel. Impacto estimado: $4.2M CLP/mes en ventas no concretadas.</p>
+        </div>
+        <div class="a3-cell">
+          <h4>🌿 Causa Raíz (5 Porqués)</h4>
+          <p>¿Por qué hay quiebres? No hay visibilidad de inventario en tiempo real. ¿Por qué? Los registros se actualizan manualmente. ¿Por qué? No existe ERP integrado. ¿Por qué? Decisión histórica de bajo costo. ¿Por qué? Falta de diagnóstico de madurez digital.</p>
+        </div>
+        <div class="a3-cell">
+          <h4>🛡 Contramedidas</h4>
+          <p>1. Módulo de inventario IoT en tiempo real. 2. Alertas automáticas al bajar del umbral crítico. 3. Portal B2B con indicador de disponibilidad visible. 4. KPI: 0% quiebres no anticipados en 90 días de operación.</p>
+        </div>
+        <div class="a3-cell">
+          <h4>📅 Plan PDCA</h4>
+          <p><strong>Plan:</strong> Jun–Jul 2025 → Configurar plataforma + IoT.<br><strong>Do:</strong> Ago 2025 → Piloto 10 clientes ancla.<br><strong>Check:</strong> Sep 2025 → Medir tasa quiebres y NPS.<br><strong>Act:</strong> Oct 2025 → Despliegue total flota.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Salience -->
+    <div class="card">
+      <p class="sec-title">🗺 Modelo de Salience — Stakeholders Estratégicos</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Stakeholder</th><th>Poder</th><th>Legitimidad</th><th>Urgencia</th><th>Clasificación</th><th>Estrategia</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Clientes B2B (Restaurantes)</strong></td><td><span class="bdg bdg-green">Alto</span></td><td><span class="bdg bdg-green">Alta</span></td><td><span class="bdg bdg-red">Alta</span></td><td><span class="bdg bdg-dark">Definitivo</span></td><td>Gestión prioritaria · Portal self-service</td></tr>
+            <tr><td><strong>Proveedores (Aguas y Pilmahue)</strong></td><td><span class="bdg bdg-green">Alto</span></td><td><span class="bdg bdg-green">Alta</span></td><td><span class="bdg bdg-amber">Media</span></td><td><span class="bdg bdg-blue">Dominante</span></td><td>Alianzas estratégicas · SLA digital</td></tr>
+            <tr><td><strong>SEREMI Salud</strong></td><td><span class="bdg bdg-amber">Medio</span></td><td><span class="bdg bdg-green">Alta</span></td><td><span class="bdg bdg-amber">Media</span></td><td><span class="bdg bdg-blue">Dominante</span></td><td>Cumplimiento normativo · Telemetría IoT</td></tr>
+            <tr><td><strong>Trabajadores Logística</strong></td><td><span class="bdg bdg-amber">Medio</span></td><td><span class="bdg bdg-green">Alta</span></td><td><span class="bdg bdg-amber">Media</span></td><td><span class="bdg bdg-blue">Dependiente</span></td><td>Capacitación · Change management</td></tr>
+            <tr><td><strong>Competidores (FRIOPACK)</strong></td><td><span class="bdg bdg-green">Alto</span></td><td><span class="bdg bdg-amber">Media</span></td><td><span class="bdg bdg-amber">Media</span></td><td><span class="bdg bdg-amber">Peligroso</span></td><td>Monitoreo competitivo continuo</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- CART SLIDE-OUT -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-head">
+    <h3>🛒 Carrito de Pedido</h3>
+    <button class="cart-x" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-foot">
+    <div class="cart-total-row"><span>Subtotal (neto)</span><span id="ct-net" class="amt" style="font-size:14px;"></span></div>
+    <div class="cart-total-row"><span>IVA 19%</span><span id="ct-tax" style="font-size:14px;font-weight:700;color:var(--muted);"></span></div>
+    <div class="cart-total-row"><span>Total con IVA</span><span class="amt" id="ct-total"></span></div>
+    <div class="cart-tax" id="ct-items"></div>
+    <button class="btn btn-green btn-full" onclick="submitOrder()">✅ Enviar Pedido Digital</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+const PRODUCTS = [
+  { id:1, name:'Lomo Vacuno Premium (Lomo Liso)', emoji:'🥩', price:120000, unit:'caja 10 kg', stock:68 },
+  { id:2, name:'Filete de Salmón Congelado IQF',  emoji:'🐟', price:95000,  unit:'caja 5 kg',  stock:41 },
+  { id:3, name:'Frutos Silvestres IQF Mix',        emoji:'🫐', price:45000,  unit:'caja 8 kg',  stock:92 },
+  { id:4, name:'Queso Cheddar Refrigerado',        emoji:'🧀', price:60000,  unit:'caja 6 kg',  stock:23 },
+];
+
+const CLIENTS = [
+  { id:0, name:'Restaurante El Gaucho Santiago', seg:'Gastronomía',  status:'Activo',      lastOrder:'$283.000', lastDate:'11 Jun' },
+  { id:1, name:'Cafetería Valparaíso Centro',    seg:'Cafetería',    status:'Activo',      lastOrder:'$142.000', lastDate:'10 Jun' },
+  { id:2, name:'Casino Central SpA',             seg:'Catering',     status:'Activo',      lastOrder:'$540.000', lastDate:'11 Jun' },
+  { id:3, name:'Minimarket El Progreso',         seg:'Retail Frío',  status:'Activo',      lastOrder:'$98.000',  lastDate:'09 Jun' },
+  { id:4, name:'Hotel Del Mar Viña',             seg:'Hotelería',    status:'En revisión', lastOrder:'$214.000', lastDate:'07 Jun' },
+  { id:5, name:'Cadena Sushi Pro',               seg:'Fast Casual',  status:'Activo',      lastOrder:'$176.000', lastDate:'10 Jun' },
+];
+
+let cart = {};          // { productId: qty }
+let orderCounter = 441;
+let incCounter   = 4;
+let spiked       = false;
+let newOrdersCount = 0;
+
+const TELE_BASE = [
+  { id:'R-01', label:'Camión R-01 · Ruta Norte',  temp:-18.4, sensor:'SN-441' },
+  { id:'R-02', label:'Camión R-02 · Ruta Sur',    temp:-19.1, sensor:'SN-442' },
+  { id:'R-03', label:'Camión R-03 · Valparaíso',  temp:-17.8, sensor:'SN-443' },
+  { id:'R-04', label:'Camión R-04 · Maipú',       temp:-20.0, sensor:'SN-444' },
+  { id:'R-05', label:'Camión R-05 · Ñuñoa',       temp:-18.6, sensor:'SN-445' },
+  { id:'R-06', label:'Camión R-06 · Estación Cen',temp:-19.3, sensor:'SN-446' },
+];
+let teleState = TELE_BASE.map(t => ({...t, ok:true}));
+
+const INIT_INCIDENTS = [
+  { id:'INC-001', type:'Quiebre de frío',  desc:'Camión R-03, Ruta Valparaíso — sensor SN-443',      st:'Crítico',    cls:'bdg-red'   },
+  { id:'INC-002', type:'Retraso entrega',  desc:'Hotel Del Mar Viña, 2 horas de retraso confirmado', st:'En gestión', cls:'bdg-amber' },
+];
+let incidents = [...INIT_INCIDENTS];
+
+const INIT_PIPE = {
+  approved: [
+    { id:'PED-2025-0438', client:'Restaurante El Gaucho', total:'$283.000', time:'08:14' },
+    { id:'PED-2025-0439', client:'Casino Central SpA',    total:'$540.000', time:'09:02' },
+  ],
+  transit: [
+    { id:'PED-2025-0435', client:'Hotel Del Mar Viña',   total:'$214.000', time:'Ayer' },
+    { id:'PED-2025-0436', client:'Cafetería Valparaíso', total:'$142.000', time:'Ayer' },
+  ],
+  fulfilled: [
+    { id:'PED-2025-0431', client:'Sushi Pro',            total:'$176.000', time:'09 Jun' },
+    { id:'PED-2025-0432', client:'Minimarket Progreso',  total:'$98.000',  time:'08 Jun' },
+    { id:'PED-2025-0433', client:'Casino Central SpA',   total:'$430.000', time:'07 Jun' },
+  ],
+};
+let pipeline = { approved:[...INIT_PIPE.approved], transit:[...INIT_PIPE.transit], fulfilled:[...INIT_PIPE.fulfilled] };
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+const PAGE_META = {
+  portal: { title:'Portal Cliente B2B', sub:'Vista: Chef / Encargado de Compras · Turno nocturno' },
+  admin:  { title:'Hub Administrador & CRM', sub:'Vista: Back-Office Distribuidora Austral SpA — Estado en tiempo real' },
+  eco:    { title:'Eco-Logística & Control de Cadena de Frío', sub:'Vista: Operaciones · Telemetría IoT & Sostenibilidad' },
+  exec:   { title:'Dashboard Ejecutivo', sub:'Hoshin Kanri · KRIs vs KPIs · Metodología Parmenter' },
+};
+function go(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelector(`[data-page="${id}"]`).classList.add('active');
+  const m = PAGE_META[id];
+  document.getElementById('tb-title').textContent = m.title;
+  document.getElementById('tb-sub').textContent   = m.sub;
+  if (id === 'admin') { newOrdersCount = 0; updateAdminBadge(); }
+}
+
+// ══════════════════════════════════════════════
+// PRODUCTS
+// ══════════════════════════════════════════════
+function stockClass(s) { return s > 55 ? 'bdg-green' : s > 30 ? 'bdg-amber' : 'bdg-red'; }
+function stockBar(s)   { return s > 55 ? 'pb-green'  : s > 30 ? 'pb-amber'  : 'pb-red'; }
+function stockLabel(s) { return s > 55 ? '✅ Disponible' : s > 30 ? '⚠ Limitado' : '🔴 Crítico'; }
+
+function buildProducts() {
+  document.getElementById('prod-grid').innerHTML = PRODUCTS.map(p => `
+    <div class="prod-card">
+      <div class="prod-img">${p.emoji}</div>
+      <div class="prod-body">
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-price">$${p.price.toLocaleString('es-CL')} <span>/ ${p.unit}</span></div>
+        <div class="stk-row">
+          <span>Stock: ${p.stock}%</span>
+          <span class="bdg ${stockClass(p.stock)}">${stockLabel(p.stock)}</span>
+        </div>
+        <div class="prog-wrap" style="margin:4px 0 10px;"><div class="prog-bar ${stockBar(p.stock)}" style="width:${p.stock}%"></div></div>
+        <button class="btn btn-blue btn-sm btn-full" onclick="addToCart(${p.id})">+ Agregar al Pedido</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════
+// CART
+// ══════════════════════════════════════════════
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  refreshCart();
+  toast(`${PRODUCTS.find(p=>p.id===id).emoji} Producto agregado al carrito`, 'ok');
+}
+function removeFromCart(id) { delete cart[id]; refreshCart(); }
+function changeQty(id, delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if (cart[id] <= 0) delete cart[id];
+  refreshCart();
+}
+
+function cartTotal() {
+  let net = 0;
+  Object.keys(cart).forEach(k => { net += PRODUCTS.find(p=>p.id==k).price * cart[k]; });
+  return { net, tax: Math.round(net * 0.19), total: Math.round(net * 1.19) };
+}
+
+function refreshCart() {
+  const keys = Object.keys(cart);
+  const totals = cartTotal();
+  const count = keys.reduce((a,k) => a + cart[k], 0);
+
+  document.getElementById('fab-badge').textContent       = count;
+  document.getElementById('fab-count-main').textContent  = count;
+
+  const body = document.getElementById('cart-body');
+  if (keys.length === 0) {
+    body.innerHTML = `<div class="cart-empty"><span>🧊</span>Sin productos aún.<br>Agrega desde el catálogo.</div>`;
+  } else {
+    body.innerHTML = keys.map(k => {
+      const p = PRODUCTS.find(x => x.id == k);
+      return `
+      <div class="ci">
+        <div class="ci-icon">${p.emoji}</div>
+        <div class="ci-info">
+          <p>${p.name}</p>
+          <span>$${p.price.toLocaleString('es-CL')} / u</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button class="btn btn-xs btn-outline" onclick="changeQty(${p.id},-1)">−</button>
+          <span style="font-weight:700;font-size:13px;">${cart[k]}</span>
+          <button class="btn btn-xs btn-outline" onclick="changeQty(${p.id},1)">+</button>
+        </div>
+        <div class="ci-price">$${(p.price*cart[k]).toLocaleString('es-CL')}</div>
+        <button class="ci-rm" onclick="removeFromCart(${p.id})">✕</button>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('ct-net').textContent   = '$' + totals.net.toLocaleString('es-CL');
+  document.getElementById('ct-tax').textContent   = '$' + totals.tax.toLocaleString('es-CL');
+  document.getElementById('ct-total').textContent = '$' + totals.total.toLocaleString('es-CL');
+  document.getElementById('ct-items').textContent = count + ' producto(s) · Precios en CLP con IVA incluido';
+}
+
+function toggleCart() {
+  document.getElementById('cart-panel').classList.toggle('open');
+  document.getElementById('cart-overlay').classList.toggle('on');
+}
+
+function reorderAll() {
+  cart = { 1:2, 2:1, 3:2, 4:1 };
+  refreshCart();
+  toast('🔁 Último pedido duplicado en el carrito', 'ok');
+}
+
+// ══════════════════════════════════════════════
+// SUBMIT ORDER → CROSS-MODULE INJECTION
+// ══════════════════════════════════════════════
+function submitOrder() {
+  if (Object.keys(cart).length === 0) { toast('⚠ Agrega productos antes de enviar', 'warn'); return; }
+  const sel = document.getElementById('client-sel');
+  const cIdx = sel.value;
+  if (cIdx === '') { toast('⚠ Selecciona un cliente para el pedido', 'warn'); return; }
+
+  const client = CLIENTS[parseInt(cIdx)];
+  const totals  = cartTotal();
+  const ordId   = 'PED-2025-0' + (++orderCounter);
+  const now     = new Date();
+  const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+  // Build order items string
+  const lines = Object.keys(cart).map(k => {
+    const p = PRODUCTS.find(x => x.id == k);
+    return `${p.emoji} ${p.name} ×${cart[k]}`;
+  });
+
+  // ── Inject into CRM ──
+  CLIENTS[parseInt(cIdx)].lastOrder = '$' + totals.total.toLocaleString('es-CL');
+  CLIENTS[parseInt(cIdx)].lastDate  = 'Ahora';
+  renderCRM();
+
+  // ── Inject into Pipeline ──
+  pipeline.approved.unshift({ id: ordId, client: client.name, total: '$' + totals.total.toLocaleString('es-CL'), time: timeStr });
+  renderPipeline();
+
+  // ── Update revenue stat ──
+  document.getElementById('s-orders').textContent = parseInt(document.getElementById('s-orders').textContent) + 1;
+
+  // ── Admin badge ──
+  newOrdersCount++;
+  updateAdminBadge();
+
+  // ── Show success overlay ──
+  document.getElementById('so-detail').innerHTML =
+    `<strong>ID Pedido:</strong> ${ordId}<br>
+     <strong>Cliente:</strong> ${client.name}<br>
+     <strong>Productos:</strong><br>${lines.map(l=>'&nbsp;&nbsp;'+l).join('<br>')}<br>
+     <strong>Neto:</strong> $${totals.net.toLocaleString('es-CL')}<br>
+     <strong>IVA 19%:</strong> $${totals.tax.toLocaleString('es-CL')}<br>
+     <strong>Total:</strong> $${totals.total.toLocaleString('es-CL')}<br>
+     <strong>Hora:</strong> ${timeStr}`;
+  document.getElementById('so').classList.add('on');
+
+  // Reset
+  cart = {};
+  refreshCart();
+  if (document.getElementById('cart-panel').classList.contains('open')) toggleCart();
+  sel.value = '';
+}
+
+function closeSO() {
+  document.getElementById('so').classList.remove('on');
+  go('admin');
+}
+
+// ══════════════════════════════════════════════
+// CRM
+// ══════════════════════════════════════════════
+function renderCRM() {
+  document.getElementById('crm-body').innerHTML = CLIENTS.map(c => `
+    <tr>
+      <td><strong>${c.name}</strong></td>
+      <td>${c.seg}</td>
+      <td><span class="bdg ${c.status === 'Activo' ? 'bdg-green' : c.status === 'En revisión' ? 'bdg-blue' : 'bdg-amber'}">${c.status}</span></td>
+      <td style="font-weight:700;color:var(--blue);">${c.lastOrder} <span style="font-size:10px;color:var(--muted);font-weight:400;">${c.lastDate}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════
+// PIPELINE
+// ══════════════════════════════════════════════
+function renderPipeline() {
+  const mkCol = (arr, cls) => arr.map(o => `
+    <div class="pipe-card ${cls}">
+      <p>${o.id}</p>
+      <div class="pipe-meta">${o.client} · <strong>${o.total}</strong> · ${o.time}</div>
+    </div>`).join('');
+  document.getElementById('pipe-approved').innerHTML  = mkCol(pipeline.approved,  'approved');
+  document.getElementById('pipe-transit').innerHTML   = mkCol(pipeline.transit,   'transit');
+  document.getElementById('pipe-fulfilled').innerHTML = mkCol(pipeline.fulfilled, 'fulfilled');
+}
+
+// ══════════════════════════════════════════════
+// INCIDENTS
+// ══════════════════════════════════════════════
+function renderIncidents() {
+  document.getElementById('inc-body').innerHTML = incidents.map(i => `
+    <tr>
+      <td>${i.id}</td>
+      <td>${i.type}</td>
+      <td>${i.desc}</td>
+      <td><span class="bdg ${i.cls}">${i.st}</span></td>
+    </tr>`).join('');
+  document.getElementById('s-inc').textContent = incidents.filter(i=>i.st!=='Resuelto').length;
+}
+
+function addIncident() {
+  const desc = document.getElementById('inc-inp').value.trim();
+  const type = document.getElementById('inc-type').value;
+  if (!desc) { toast('⚠ Escribe una descripción', 'warn'); return; }
+  incidents.unshift({ id:'INC-00'+incCounter++, type, desc, st:'Nuevo', cls:'bdg-blue' });
+  renderIncidents();
+  document.getElementById('inc-inp').value = '';
+  toast('📋 Incidente registrado en el sistema', 'ok');
+}
+
+// ══════════════════════════════════════════════
+// TELEMETRY
+// ══════════════════════════════════════════════
+function renderTele() {
+  document.getElementById('tele-grid').innerHTML = teleState.map(t => `
+    <div class="tele-card ${t.ok ? '' : 'crit'}">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div class="tele-temp ${t.ok ? 'tele-ok' : 'tele-bad'}">${t.temp.toFixed(1)}°C</div>
+          <div class="tele-sub">${t.label}</div>
+          <div class="tele-sub">Sensor #${t.sensor}</div>
+        </div>
+        <div style="font-size:28px;">${t.ok ? '✅' : '🚨'}</div>
+      </div>
+      <div class="tele-status" style="color:${t.ok ? 'var(--green)' : 'var(--red)'}">
+        ${t.ok ? '● Normal (≤ −18°C)' : '⚠ ALERTA CRÍTICA — QUIEBRE DE FRÍO'}
+      </div>
+    </div>`).join('');
+}
+
+function simulateSpike() {
+  spiked = !spiked;
+  const btn = document.getElementById('spike-btn');
+  if (spiked) {
+    teleState[2].temp = -5.3;  teleState[2].ok = false;
+    teleState[4].temp = -10.7; teleState[4].ok = false;
+    teleState[5].temp = +2.1;  teleState[5].ok = false;
+    // Push critical incident
+    incidents.unshift({ id:'INC-00'+incCounter++, type:'Quiebre de frío', desc:'🚨 CRISIS: Falla servidor → R-03, R-05, R-06 temperatura crítica positiva', st:'Crítico', cls:'bdg-red' });
+    renderIncidents();
+    btn.textContent = '✅ Restaurar Sistema';
+    btn.className   = 'btn btn-green btn-sm';
+    toast('🚨 ALERTA CRÍTICA: Quiebre de frío activo en 3 unidades de flota', 'err');
+    document.getElementById('co2-val').textContent = '0.0 ton';
+    document.getElementById('co2-d').textContent   = '⚠ Sistema offline — datos interrumpidos';
+    document.getElementById('co2-d').style.color   = 'var(--red)';
+    newOrdersCount++;
+    updateAdminBadge();
+  } else {
+    teleState = TELE_BASE.map(t => ({...t, ok:true}));
+    btn.textContent = '⚡ Simulate Server Failure & Cold Chain Drop';
+    btn.className   = 'btn btn-red btn-sm';
+    toast('✅ Sistema restaurado. Cadena de frío estabilizada', 'ok');
+    document.getElementById('co2-val').textContent = '2.4 ton';
+    document.getElementById('co2-d').textContent   = '▲ +18% eficiencia vs. mes anterior';
+    document.getElementById('co2-d').style.color   = 'var(--green)';
+  }
+  renderTele();
+}
+
+// ══════════════════════════════════════════════
+// ADMIN BADGE
+// ══════════════════════════════════════════════
+function updateAdminBadge() {
+  const nb = document.getElementById('nb-admin');
+  if (newOrdersCount > 0) { nb.textContent = newOrdersCount; nb.style.display = 'inline-flex'; }
+  else { nb.style.display = 'none'; }
+}
+
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'toast ' + type + ' show';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+buildProducts();
+renderCRM();
+renderPipeline();
+renderIncidents();
+renderTele();
+refreshCart();
+</script>
+</body>
+</html>
